@@ -25,9 +25,8 @@ a:hover {
 }
 
 .main {
-  /*background-image: url(http://s21.postimg.org/cbxlj5x47/image.jpg);*/
   background-repeat: no-repeat;
-  margin: 0 auto;
+  margin: 20px auto;
  }
 
 a:hover, a:link {
@@ -249,7 +248,11 @@ svg {
   margin-right: 15px;
 }
 
-.home-feed-card-vote-info .source {
+.home-feed-card-vote-info {
+  float: right;
+}
+
+.home-feed-card-vote-info-source {
   float: right;
 }
 

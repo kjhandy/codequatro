@@ -18,6 +18,7 @@ function pgConnect() {
   pg.connect(connectString, function (err, client, done){
     if(err){
       deffered.reject(new Error('error connecting to the DB:', err) );
+      done();
     } else {
     	deferred.resolve({
     		client: client,
@@ -89,16 +90,16 @@ exports = module.exports = {
         console.log('userInfo:\n', userInfo);
 
 	      res.status(200).json(userInfo);
+        done();
     	})
-    	.then(done)
     	.fail(function(err) {
-    		if (err.message === 'Stop promise chain') {
-					console.log('Failed to signin %s', attemptedUsername);
-    		} else {
-    			console.log(err);
-    			next(err);
-    		}
     		done();
+        if (err.message === 'Stop promise chain') {
+          console.log('Failed to signin %s', attemptedUsername);
+        } else {
+          console.log(err);
+          next(err);
+        }
     	})
 		// pg.connect(connectString, function (err, client, done) {
 		// 	if(err) {
@@ -146,20 +147,20 @@ exports = module.exports = {
 		var lastname = req.body.lastname;
 		var gender = req.body.gender;
 		pg.connect(connectString, function (err, client, done) {
-			if(err) {
-				console.error(err);
-			} else {
-				client.query('INSERT INTO users (username, password, firstname, lastname, gender) VALUES ($1, $2, $3, $4, $5)', [username, password, firstname, lastname, gender], function (err, result){
-				  if(err) {
-				    console.log('not cool man. database error on signup: ', err)
+	    done();
+      if(err) {
+        console.error(err);
+      } else {
+        client.query('INSERT INTO users (username, password, firstname, lastname, gender) VALUES ($1, $2, $3, $4, $5)', [username, password, firstname, lastname, gender], function (err, result){
+          if(err) {
+            console.log('not cool man. database error on signup: ', err)
             next(err);
-				  } else {
-				  	console.log('result: ', result)
-				    res.status(201).json({ username: username }) // removed token as was undefined for signup
-				    done();
-				  }
-				})	
-			}
+          } else {
+            console.log('result: ', result)
+            res.status(201).json({ username: username }) // removed token as was undefined for signup
+          }
+        })  
+      }
 		}) // pg.connect end
 	},
 
@@ -171,18 +172,17 @@ exports = module.exports = {
 		pg.connect(connectString, function (err, client, done) {
 			client.query('UPDATE users SET username = $2, firstname = $3, lastname = $4, WHERE user_id = $1', [userID, username, firstname, lastname])
 			client.query('SELECT username, firstname, lastname FROM users WHERE user_id = $1', [userID], function (err, result){
-				  if(err) {
-			    	console.error('error on lookup of user_id: ', err)
-            next(err);
-			    } else {
-					var userInfo = {
-						username: username,
-						firstname: firstname,
-						lastname: lastname
-					};
-					res.status(200).json(userInfo);
 					done();
-			    }
+          if(err) {
+            console.error('error on lookup of user_id: ', err)
+            next(err);
+          } else {
+            res.status(200).json({
+              username: username,
+              firstname: firstname,
+              lastname: lastname
+            });
+          }
 			})
 		}) // pg.connect end
 	},
@@ -394,10 +394,10 @@ exports = module.exports = {
       .then(function(following) {
         userInfo.following = following;
 
-        console.log('userInfo:\n', userInfo);
+        // console.log('userInfo:\n', userInfo);
         res.status(200).json(userInfo);
+        done();
       })
-      .then(done)
       .fail(function(err) {
         done();
         if (err.message === 'Stop promise chain') {
@@ -542,7 +542,7 @@ exports = module.exports = {
     )
       .then(function(result) {
         var followings = result.rows;
-        console.log('followings', followings);
+        // console.log('followings', followings);
 
         // Example followings:
         // [
@@ -612,10 +612,10 @@ exports = module.exports = {
       })
       .then(function(following) {
         userInfo.following = following;
-        console.log('Basic userInfo:\n', userInfo);
+        // console.log('Basic userInfo:\n', userInfo);
         res.status(200).json(userInfo);
+        done();
       })
-      .then(done)
       .fail(function(err) {
         done();
         if (err.message === 'Stop promise chain') {
@@ -656,14 +656,14 @@ exports = module.exports = {
 	getAllUsers: function(req, res, next) {
 		pg.connect(connectString, function (err, client, done) {
 			client.query('SELECT user_id, username, firstname, lastname, gender, credibilityScore FROM users', [], function (err, result){
-				if(err) {
-			    	console.error('error on lookup of all users: ', err)
+				  done();
+          if(err) {
+            console.error('error on lookup of all users: ', err)
             next(err);
-			    } else {
-					allUsers = result.rows;
-					res.status(200).json(allUsers);
-					done();
-			    }
+          } else {
+            allUsers = result.rows;
+            res.status(200).json(allUsers);
+          }
 			})	
 		}) // pg.connect end
 	},
@@ -671,22 +671,22 @@ exports = module.exports = {
 	getTopUsers: function(req, res, next) {
 		pg.connect(connectString, function (err, client, done) {
 			client.query('SELECT user_id, username, firstname, lastname, gender, credibilityScore FROM users', [], function (err, result){
-				if(err) {
-			    	console.error('error on lookup of top users: ', err)
+				  done();
+          if(err) {
+            console.error('error on lookup of top users: ', err)
             next(err);
-			    } else {
-					topUsers = result.rows;
-					// sort users by highest credibility score
-					topUsers.sort(function(a, b){
-						var scoreA = a.credibilityscore;
-						var scoreB = b.credibilityscore;
-					    if(scoreA > scoreB) return -1;
-					    if(scoreA < scoreB) return 1;
-					    return 0;
-					})
-					res.status(200).json(topUsers);
-					done();
-			    }
+          } else {
+            topUsers = result.rows;
+            // sort users by highest credibility score
+            topUsers.sort(function(a, b){
+              var scoreA = a.credibilityscore;
+              var scoreB = b.credibilityscore;
+                if(scoreA > scoreB) return -1;
+                if(scoreA < scoreB) return 1;
+                return 0;
+            })
+            res.status(200).json(topUsers);
+          }
 			})	
 		}) // pg.connect end
 	},
@@ -695,8 +695,8 @@ exports = module.exports = {
 		var follower = req.body.follower;
 		var following = req.body.following;
 
-    console.log('follower', follower);
-    console.log('following', following);
+    // console.log('follower', follower);
+    // console.log('following', following);
 
     // Example for 'following':
 		//   user_id: 1,
@@ -721,7 +721,7 @@ exports = module.exports = {
     		);
     	})
     	.then(function(result) {
-        console.log('result:', result);
+        // console.log('result:', result);
     		var alreadyExists = ( result.rowCount !== 0 );
     		if (alreadyExists) {
     			throw new Error('Stop promise chain');
@@ -735,7 +735,7 @@ exports = module.exports = {
     	.then(function(result) {
 				console.log('%s is now following %s', follower.username, following.username);
 
-    		return res.json({
+    		res.json({
     			follower: {
     				user_id: follower.user_id,
     				username: follower.username,
@@ -753,37 +753,37 @@ exports = module.exports = {
     				credibilityscore: following.credibilityscore
     			}
     		});
+        done();
     	})
-    	.then(done)
     	.fail(function(err) {
-    		if (err.message === 'Stop promise chain') {
-					console.log(
-						'%s is already following %s',
-						follower.username, following.username
-					);
-    			res.json({
-	    			follower: {
-	    				user_id: follower.user_id,
-	    				username: follower.username,
-	    				firstname: follower.firstname,
-	    				lastname: follower.lastname,
-	    				gender: follower.gender,
-	    				credibilityscore: follower.credibilityscore
-	    			},
-	    			following: {
-	    				user_id: following.user_id,
-	    				username: following.username,
-	    				firstname: following.firstname,
-	    				lastname: following.lastname,
-	    				gender: following.gender,
-	    				credibilityscore: following.credibilityscore
-	    			}
-	    		});
-    		} else {
-    			console.log(err);
-    			next(err);
-    		}
     		done();
+        if (err.message === 'Stop promise chain') {
+          console.log(
+            '%s is already following %s',
+            follower.username, following.username
+          );
+          res.json({
+            follower: {
+              user_id: follower.user_id,
+              username: follower.username,
+              firstname: follower.firstname,
+              lastname: follower.lastname,
+              gender: follower.gender,
+              credibilityscore: follower.credibilityscore
+            },
+            following: {
+              user_id: following.user_id,
+              username: following.username,
+              firstname: following.firstname,
+              lastname: following.lastname,
+              gender: following.gender,
+              credibilityscore: following.credibilityscore
+            }
+          });
+        } else {
+          console.log(err);
+          next(err);
+        }
     	})
 	}
 

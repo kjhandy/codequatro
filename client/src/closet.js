@@ -7,17 +7,10 @@ angular.module('myApp')
     $scope.search = "-1";
     // $scope.fire = 'https://s-media-cache-ak0.pinimg.com/236x/4a/8b/c7/4a8bc790db90babc2d5346f07e516ddb.jpg';
 
-
-
     // Temporary Data Storage
     $scope.user = {};
     $scope.user = JSON.parse($window.localStorage.getItem('user'));
-    $scope.userID = $scope.user.userID;
     $scope.username = $stateParams.username || $scope.user.username;
-    $scope.gender = $scope.user.gender;
-    $scope.firstname = $scope.user.firstname;
-    $scope.lastname = $scope.user.lastname;
-
 
     $scope.getUserInfo = function(){
       // Call the factory method which gets a user's images

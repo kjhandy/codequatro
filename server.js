@@ -54,6 +54,14 @@ require('./server/images/imagesRoutes.js')(imagesRouter);
 app.use('/users/', usersRouter);
 app.use('/images/', imagesRouter);
 
+// Set up error handling.
+app.use(errorHandler);
+
+function errorHandler(error, req, res, next) {
+  console.error(error.stack)
+  res.status(500).send({error: error.message});
+};
+
 // Run the server.
 app.listen(app.get('port'), function(){
 	console.log('Node app is running on port', app.get('port'));

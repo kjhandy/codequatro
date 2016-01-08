@@ -3,14 +3,15 @@
 angular.module('myApp')
   .controller('VoteCtrl', ['$scope','$http', '$window','Register', 'Authorization', function($scope, $http, $window, Register , Authorization) {
     $scope.updated = false;
-    // $scope.hotOrNot;
-
 
     // Temporary Data Storage
-    $scope.username = $window.localStorage.getItem('username');
-    $scope.firstname = undefined; // will be set when 'getBasicUserInfo' is run
-    $scope.lastname = undefined; // will be set when 'getBasicUserInfo' is run
-    $scope.gender = undefined; // will be set when 'getBasicUserInfo' is run
+    $scope.user = {};
+    $scope.user = undefined;
+    $scope.userID = undefined;
+    $scope.username = undefined;
+    $scope.gender = undefined;
+    $scope.firstname = undefined;
+    $scope.lastname = undefined;
     $scope.userCredibility = undefined; // will be set when 'getBasicUserInfo' is run
 
 
@@ -24,9 +25,6 @@ angular.module('myApp')
         .then(function(data){
             console.log('User Info: ', data)
             // Storing User Info
-            $scope.firstname = data.firstname;
-            $scope.lastname = data.lastname;
-            $scope.gender = data.gender;
             $scope.userCredibility = data.userCredibility;
         })
     };
@@ -54,7 +52,13 @@ angular.module('myApp')
 
     // initialize page with image if auth is good
     if(Authorization.authorized) {
-        $scope.getBasicUserInfo();
+        $scope.user = JSON.parse($window.localStorage.getItem('user'));
+        $scope.userID = $scope.user.userID;
+        $scope.username = $scope.user.username;
+        $scope.gender = $scope.user.gender;
+        $scope.firstname = $scope.user.firstname;
+        $scope.lastname = $scope.user.lastname;
+        // $scope.getBasicUserInfo();
         $scope.getImage();
     }
 

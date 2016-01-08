@@ -121,6 +121,7 @@ exports = module.exports = {
 
 	randomImage: function(req, res, next) {
 		var username = req.body.username;
+		console.log(req.body)
 		pg.connect(connectString, function (err, client, done) {
 			if(err){
 			  console.error('error connecting to the DB:', err);
@@ -131,6 +132,7 @@ exports = module.exports = {
 			      console.error('error on lookup of user_id', err)
 			    }
 			    else {
+			    	console.log(result)
 			      var userId = result.rows[0].user_id;
 			      client.query('SELECT image_name, image_id, image, link_url, source FROM images WHERE images.user_id <> $1 AND images.image_id NOT IN (SELECT image_id FROM votes WHERE user_id = $1) ORDER BY RANDOM() LIMIT 1' ,[userId], function(err, result){
 			        if(result.rows.length === 0) {

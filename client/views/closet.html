@@ -57,7 +57,7 @@
       <span class="source">{{pic.source}}</span>
     </div>
   </div>
-  <div ng-hide="{{pics.length > 0}}"> Please Share Your Photos</div>
+  <div ng-show="user.pics.length < 1"> Please Share Your Photos</div>
 </div>
     <div class="followers-container">
       <div class="followers-interior">
@@ -75,26 +75,8 @@
       </div>
     </div>
 
-   <!--  <div class="remove" ng-click="removeImage(pic.image_id, pic.image_name); reloadPage()">
+<!--     <div class="remove" ng-click="removeImage(pic.image_id, pic.image_name); reloadPage()">
       <img id="delete" src="delete-icon.jpg"/>
     </div> -->
 
 </div>
-<div ng-hide="{{data.pics.length > 0}}"> Please Share Your Photos</div>
-
-
-<!--
-  <div class="pure-menu pure-menu-horizontal">
-    <ul class="pure-menu-list">
-        <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover" name="clothingType">
-            <a href="#" id="menuLink1" class="pure-menu-link">colthing type</a>
-            <ul class="pure-menu-children">
-                <li class="pure-menu-item"><a href="#" class="pure-menu-link" option value="1">tops</a></li>
-                <li class="pure-menu-item"><a href="#" class="pure-menu-link" option value="2">bottoms</a></li>
-                <li class="pure-menu-item"><a href="#" class="pure-menu-link" option value="3">shoes</a></li>
-                <li class="pure-menu-item"><a href="#" class="pure-menu-link" option value="4">outfit</a></li>
-            </ul>
-        </li>
-    </ul>
-</div> -->
-

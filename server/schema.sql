@@ -139,6 +139,9 @@ insert into clothing_types (type_id, description) values (4, 'outfit');
 -- ---
 
 insert into users (username, password, firstname, lastname, gender) values ('Tarly', '1234', 'Tarly', 'Fass', 'male');
+insert into users (username, password, firstname, lastname, gender) values ('Calvin', '1234', 'Calvin', 'John', 'male');
+insert into users (username, password, firstname, lastname, gender) values ('Hobbes', '1234', 'Hobbes', 'DeTiger', 'male');
+insert into users (username, password, firstname, lastname, gender) values ('Tigger', '1234', 'T.I.', 'DoubleGuhEr', 'male');
 
 -- INSERT INTO votes (user_id,image_id,vote) VALUES
 -- ('','','');

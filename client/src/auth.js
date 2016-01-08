@@ -42,10 +42,10 @@ angular.module('myApp')
 
     $scope.signout = function() {
       Authorization.authorized = false
-      $window.localStorage.removeItem('authtoken')
-      // $window.localStorage.removeItem('username')
-      // $window.localStorage.removeItem('userID')
-      $window.localStorage.removeItem('user')
+      $window.localStorage.removeItem('authtoken');
+      $window.localStorage.removeItem('username')
+      $window.localStorage.removeItem('userID')
+      $window.localStorage.removeItem('user');
       $state.go('home')
     }
 

@@ -64,7 +64,7 @@
         <div class="follower-container" ng-repeat="follower in user.followers">
           <div class="follower-interior">
             <h2 class="follower-username" ng-click="goToProfile(follower)">{{ follower.username }}</h2>
-            <svg class="follower-pic" ng-click="goToProfile(user)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><path d="m24 24c4.42 0 8-3.59 8-8 0-4.42-3.58-8-8-8-4.42 0-8 3.58-8 8 0 4.41 3.58 8 8 8m0 4c-5.33 0-16 2.67-16 8v4h32v-4c0-5.33-10.67-8-16-8"/></svg>
+            <svg class="follower-pic" ng-click="goToProfile(follower)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><path d="m24 24c4.42 0 8-3.59 8-8 0-4.42-3.58-8-8-8-4.42 0-8 3.58-8 8 0 4.41 3.58 8 8 8m0 4c-5.33 0-16 2.67-16 8v4h32v-4c0-5.33-10.67-8-16-8"/></svg>
             <h3 class="follower-fullname" ng-click="goToProfile(follower)">{{ follower.firstname }} {{ follower.lastname }}</h2>
             <h4 class="follower-cred" ng-click="goToProfile(follower)">{{ follower.credibilityscore }}</h4>
           </div>

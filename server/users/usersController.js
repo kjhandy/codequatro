@@ -152,6 +152,7 @@ exports = module.exports = {
 				client.query('INSERT INTO users (username, password, firstname, lastname, gender) VALUES ($1, $2, $3, $4, $5)', [username, password, firstname, lastname, gender], function (err, result){
 				  if(err) {
 				    console.log('not cool man. database error on signup: ', err)
+            next(err);
 				  } else {
 				  	console.log('result: ', result)
 				    res.status(201).json({ username: username }) // removed token as was undefined for signup
@@ -170,8 +171,9 @@ exports = module.exports = {
 		pg.connect(connectString, function (err, client, done) {
 			client.query('UPDATE users SET username = $2, firstname = $3, lastname = $4, WHERE user_id = $1', [userID, username, firstname, lastname])
 			client.query('SELECT username, firstname, lastname FROM users WHERE user_id = $1', [userID], function (err, result){
-				if(err) {
+				  if(err) {
 			    	console.error('error on lookup of user_id: ', err)
+            next(err);
 			    } else {
 					var userInfo = {
 						username: username,
@@ -241,34 +243,138 @@ exports = module.exports = {
         userInfo.votes = result.rows;
         userInfo.userCredibility = 0;
 
-        // Calculate votes for each pictures and user credibility               
-        for (var i = 0; i < result.rows.length; i++) {
-          if (result.rows[i].upvote === 1) {
+        // Calculate votes for each pictures and user credibility
+        var rows = result.rows;
+        var rowsLength = rows.length;
+
+        var pics = userInfo.pics;
+        var picsLength = pics.length;
+
+        var i = rowsLength - 1;
+        while (i >= 0) {
+          var row = rows[i];
+
+          if (row.upvote === 1) {
             userInfo.userCredibility++;
-            for (var x = 0; x < userInfo.pics.length; x++) {
-                if (!userInfo.pics[x].upvotes) userInfo.pics[x].upvotes = 0;
-                if (result.rows[i].image_id === userInfo.pics[x].image_id) {
-                  userInfo.pics[x].upvotes++;
-                  if (!userInfo.pics[x].genderData) userInfo.pics[x].genderData = {male: {upvotes: 0, downvotes: 0}, female: {upvotes: 0, downvotes: 0}, other: {upvotes: 0, downvotes: 0}};
-                  if (result.rows[i].gender === 'male') userInfo.pics[x].genderData.male.upvotes++
-                  if (result.rows[i].gender === 'female') userInfo.pics[x].genderData.female.upvotes++
-                  if (result.rows[i].gender != 'male' && result.rows[i].gender != 'female') userInfo.pics[x].genderData.other.upvotes++
+
+            var x = picsLength - 1;
+            while (x >= 0) {
+              var pic = pics[x];
+
+              if ( ! pic.upvotes ) {
+                pic.upvotes = 0;
+              }
+              if (row.image_id === pic.image_id) {
+                pic.upvotes++;
+
+                if ( ! pic.genderData ) {
+                  pic.genderData = {
+                    male: {
+                      upvotes: 0,
+                      downvotes: 0
+                    },
+                    female: {
+                      upvotes: 0,
+                      downvotes: 0
+                    },
+                    other: {
+                      upvotes: 0,
+                      downvotes: 0
+                    }
+                  };
+                }
+
+                if (row.gender === 'male'){
+                  pic.genderData.male.upvotes++;
+                }
+                if (row.gender === 'female') {
+                  pic.genderData.female.upvotes++;
+                }
+                if (row.gender != 'male' && row.gender != 'female') {
+                  pic.genderData.other.upvotes++;
+                }
+
+              }
+
+              userInfo.pics[x] = pic;
+              x--;
+            }
+
+          } else if (row.downvote === 1) {
+            userInfo.userCredibility--;
+
+            var y = picsLength - 1;
+            while (y >= 0) {
+              var pic = pics[y];
+
+              if ( ! pic.downvotes ) {
+                pic.downvotes = 0;
+              }
+              if (row.image_id === pic.image_id) {
+                pic.downvotes++;
+
+                if ( ! pic.genderData ) {
+                  pic.genderData = {
+                    male: {
+                      upvotes: 0,
+                      downvotes: 0
+                    },
+                    female: {
+                      upvotes: 0,
+                      downvotes: 0
+                    }, other: {
+                      upvotes: 0,
+                      downvotes: 0
+                    }
+                  };
+                }
+                if (row.gender === 'male') {
+                  pic.genderData.male.downvotes++;
+                }
+                if (row.gender === 'female') {
+                  pic.genderData.female.downvotes++;
+                }
+                if (row.gender != 'male' && row.gender != 'female') {
+                  pic.genderData.other.downvotes++;
                 }
               }
-          } else if (result.rows[i].downvote === 1) {
-            userInfo.userCredibility--;
-            for (var y = 0; y < userInfo.pics.length; y++) {
-              if (!userInfo.pics[y].downvotes) userInfo.pics[y].downvotes = 0;
-                if (result.rows[i].image_id === userInfo.pics[y].image_id) {
-                  userInfo.pics[y].downvotes++;
-                  if (!userInfo.pics[y].genderData) userInfo.pics[y].genderData = {male: {upvotes: 0, downvotes: 0}, female: {upvotes: 0, downvotes: 0}, other: {upvotes: 0, downvotes: 0}};
-                  if (result.rows[i].gender === 'male') userInfo.pics[y].genderData.male.downvotes++
-                  if (result.rows[i].gender === 'female') userInfo.pics[y].genderData.female.downvotes++
-                  if (result.rows[i].gender != 'male' && result.rows[i].gender != 'female') userInfo.pics[y].genderData.other.downvotes++
-                }
+              
+              userInfo.pics[y] = pic;
+              y--;
             }
           }
+
+          result.rows[i] = row;
+          i--;
         }
+        // Calculate votes for each pictures and user credibility
+        // for (var i = 0; i < result.rows.length; i++) {
+        //   if (result.rows[i].upvote === 1) {
+        //     userInfo.userCredibility++;
+        //     for (var x = 0; x < userInfo.pics.length; x++) {
+        //         if (!userInfo.pics[x].upvotes) userInfo.pics[x].upvotes = 0;
+        //         if (result.rows[i].image_id === userInfo.pics[x].image_id) {
+        //           userInfo.pics[x].upvotes++;
+        //           if (!userInfo.pics[x].genderData) userInfo.pics[x].genderData = {male: {upvotes: 0, downvotes: 0}, female: {upvotes: 0, downvotes: 0}, other: {upvotes: 0, downvotes: 0}};
+        //           if (result.rows[i].gender === 'male') userInfo.pics[x].genderData.male.upvotes++
+        //           if (result.rows[i].gender === 'female') userInfo.pics[x].genderData.female.upvotes++
+        //           if (result.rows[i].gender != 'male' && result.rows[i].gender != 'female') userInfo.pics[x].genderData.other.upvotes++
+        //         }
+        //       }
+        //   } else if (result.rows[i].downvote === 1) {
+        //     userInfo.userCredibility--;
+        //     for (var y = 0; y < userInfo.pics.length; y++) {
+        //       if (!userInfo.pics[y].downvotes) userInfo.pics[y].downvotes = 0;
+        //         if (result.rows[i].image_id === userInfo.pics[y].image_id) {
+        //           userInfo.pics[y].downvotes++;
+        //           if (!userInfo.pics[y].genderData) userInfo.pics[y].genderData = {male: {upvotes: 0, downvotes: 0}, female: {upvotes: 0, downvotes: 0}, other: {upvotes: 0, downvotes: 0}};
+        //           if (result.rows[i].gender === 'male') userInfo.pics[y].genderData.male.downvotes++
+        //           if (result.rows[i].gender === 'female') userInfo.pics[y].genderData.female.downvotes++
+        //           if (result.rows[i].gender != 'male' && result.rows[i].gender != 'female') userInfo.pics[y].genderData.other.downvotes++
+        //         }
+        //     }
+        //   }
+        // }
 
         // Update User Credibility Score in Database for Efficiency When Grabbing Score Later
         return clientQuery(`
@@ -296,6 +402,7 @@ exports = module.exports = {
         done();
         if (err.message === 'Stop promise chain') {
           console.log('Failed to get user info for %s', username);
+          next();
         } else {
           console.log(err);
           next(err);
@@ -551,6 +658,7 @@ exports = module.exports = {
 			client.query('SELECT user_id, username, firstname, lastname, gender, credibilityScore FROM users', [], function (err, result){
 				if(err) {
 			    	console.error('error on lookup of all users: ', err)
+            next(err);
 			    } else {
 					allUsers = result.rows;
 					res.status(200).json(allUsers);
@@ -565,6 +673,7 @@ exports = module.exports = {
 			client.query('SELECT user_id, username, firstname, lastname, gender, credibilityScore FROM users', [], function (err, result){
 				if(err) {
 			    	console.error('error on lookup of top users: ', err)
+            next(err);
 			    } else {
 					topUsers = result.rows;
 					// sort users by highest credibility score

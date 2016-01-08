@@ -17,8 +17,8 @@ angular.module('myApp')
         console.log(' signin data from our authjs', data)
         Authorization.authorized = true
         $window.localStorage.setItem('authtoken', data.token)
-        $window.localStorage.setItem('username', data.username)
-        $window.localStorage.setItem('userID', data.userID);
+        // $window.localStorage.setItem('username', data.username)
+        // $window.localStorage.setItem('userID', data.userID);
         $window.localStorage.setItem('user', JSON.stringify(data));
 
         $state.go('closet')
@@ -43,8 +43,9 @@ angular.module('myApp')
     $scope.signout = function() {
       Authorization.authorized = false
       $window.localStorage.removeItem('authtoken')
-      $window.localStorage.removeItem('username')
-      $window.localStorage.removeItem('userID')
+      // $window.localStorage.removeItem('username')
+      // $window.localStorage.removeItem('userID')
+      $window.localStorage.removeItem('user')
       $state.go('home')
     }
 

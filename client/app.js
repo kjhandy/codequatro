@@ -128,6 +128,9 @@ angular.module('myApp', [
       .then(function(resp){
         return resp.data;
       })
+      .catch(function (error) {
+        console.log(error);
+      })
     };
 
     register.signin = function(user){
@@ -138,6 +141,9 @@ angular.module('myApp', [
       })
       .then(function(resp){
         return resp.data;
+      })
+      .catch(function (error) {
+        console.log(error);
       })
     };
     /***************AUTHORIZATION***********************/
@@ -152,6 +158,9 @@ angular.module('myApp', [
       .then(function(resp){
         return resp.data;
       })
+      .catch(function (error) {
+        console.log(error);
+      })
     }
 
     register.vote = function(voteValue, username, imageId){
@@ -163,6 +172,9 @@ angular.module('myApp', [
       })
       .then(function(resp){
         return resp.data;
+      })
+      .catch(function (error) {
+        console.log(error);
       })
     }
     /*****************VOTING ON IMAGE*******************/
@@ -212,6 +224,9 @@ angular.module('myApp', [
         console.log(resp)
         return resp.data;
       })
+      .catch(function (error) {
+        console.log(error);
+      })
     };
     /*************GET CLOSET IMAGES********************/
     register.getBasicUserInfo = function(user){
@@ -225,6 +240,9 @@ angular.module('myApp', [
         console.log('basic info response: ', resp)
         return resp.data;
       })
+      .catch(function (error) {
+        console.log(error);
+      })
     };
     /*************GET CLOSET IMAGES********************/
     register.removeImage = function(imageId, imageName){
@@ -236,6 +254,9 @@ angular.module('myApp', [
       .then(function(resp){
         return resp.data;
       })
+      .catch(function (error) {
+        console.log(error);
+      })
     };
     /*************GET TOP USERS********************/
     register.getTopUsers = function(user){
@@ -246,6 +267,9 @@ angular.module('myApp', [
       })
       .then(function(resp){
         return resp.data;
+      })
+      .catch(function (error) {
+        console.log(error);
       })
     };
     /*************FOLLOW USER********************/
@@ -268,6 +292,9 @@ angular.module('myApp', [
       })
       .then(function(resp){
         return resp.data;
+      })
+      .catch(function (error) {
+        console.log(error);
       })
     };
     /***************** AWS S3 ****************************/

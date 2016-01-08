@@ -10,7 +10,8 @@ angular.module('myApp')
     $scope.signout = function() {
       console.log('signing out!')
       $window.localStorage.removeItem("authtoken")
-      $window.localStorage.removeItem(username)
+      // $window.localStorage.removeItem(username)
+      $window.localStorage.removeItem(user)
     };
 
     // $scope.getImageData = function(link) {

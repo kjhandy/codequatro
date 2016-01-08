@@ -211,6 +211,7 @@ exports = module.exports = {
 		}
 		console.log('imageId', imageId);
 		pg.connect(connectString, function (err, client, done) {
+		        	console.log('made it here bro')
 		if (err) {
 		  console.error('error connecting to the DB:', err);
 		} else {

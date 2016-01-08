@@ -14,7 +14,7 @@ angular.module('myApp', [
           url: '/',
           views: {
             "nav": {templateUrl: "views/nav.html"},
-            "main":{templateUrl: 'views/main.html'}
+            "main":{templateUrl: 'views/home.html'}
           }
       })
 

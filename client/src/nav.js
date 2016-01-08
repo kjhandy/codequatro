@@ -6,12 +6,12 @@ angular.module('myApp')
    $scope.isAuth=Authorization.authorized;
 
    // data storage
-    $scope.user = JSON.parse($window.localStorage.getItem('user'));
-    $scope.userID = $scope.user.userID;
-    $scope.username = $scope.user.username;
-    $scope.gender = $scope.user.gender;
-    $scope.firstname = $scope.user.firstname;
-    $scope.lastname = $scope.user.lastname;
+    $scope.user = undefined;
+    $scope.userID = undefined;
+    $scope.username = undefined;
+    $scope.gender = undefined;
+    $scope.firstname = undefined;
+    $scope.lastname = undefined;
 
 	$scope.image_name = undefined;
 	$scope.image = undefined;
@@ -96,6 +96,15 @@ angular.module('myApp')
 
     $scope.goBack = function() {
       $window.history.back();
+    }
+
+    if (Authorization.authorized) {
+        $scope.user = JSON.parse($window.localStorage.getItem('user'));
+        $scope.userID = $scope.user.userID;
+        $scope.username = $scope.user.username;
+        $scope.gender = $scope.user.gender;
+        $scope.firstname = $scope.user.firstname;
+        $scope.lastname = $scope.user.lastname;
     }
 
   }]);

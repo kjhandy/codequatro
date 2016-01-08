@@ -11,32 +11,19 @@ angular.module('myApp')
 
     // Temporary Data Storage
     $scope.username = $stateParams.username || $window.localStorage.getItem('username');
-    $scope.userID = undefined; // will be set when 'getUserInfo' is run
-    $scope.firstname = undefined; // will be set when 'getUserInfo' is run
-    $scope.lastname = undefined; // will be set when 'getUserInfo' is run
-    $scope.gender = undefined; // will be set when 'getUserInfo' is run
-    $scope.userCredibility = undefined; // will be set when 'getUserInfo' is run
 
     $scope.user = {};
 
     $scope.getUserInfo = function(){
       //Call the factory method which gets a users images and votes for those images
       Register.register.getCloset($scope.username)
-      .then(function(data){
-        console.log('User Info: ', data)
-
-        // Storing User Info
-        $scope.user = data;
-
-        $scope.firstname = data.firstname;
-        $scope.lastname = data.lastname;
-        $scope.gender = data.gender;
-        $scope.userCredibility = data.userCredibility;
-
-        // Scoring Closet Photos
-        $scope.pics = data.pics;
-
-      }); //end .then
+        .then(function(data){
+          console.log('User Info: ', data)
+          $scope.user = data;
+        })
+        .catch(function (err) {
+          console.log(err);
+        })
     };
 
     $scope.removeImage = function(imageId, imageName){
@@ -44,9 +31,12 @@ angular.module('myApp')
       console.log('current image ID', imageId);
       console.log('current image NAME', imageName);
       Register.register.removeImage(imageId, imageName)
-      .then(function(data){
-        console.log(data);
-      })
+        .then(function(data){
+          console.log(data);
+        })
+        .catch(function (err) {
+          console.log(err);
+        })
     };
 
     $scope.customFilter = function (pic) {
@@ -62,8 +52,7 @@ angular.module('myApp')
     };
     // initialize page with closet images if auth is good
     if(Authorization.authorized) {
-      console.log('not authorized');
-        $scope.getUserInfo();
+      $scope.getUserInfo();
     }
 
     $scope.reloadPage = function(){
@@ -75,7 +64,10 @@ angular.module('myApp')
       Register.register.getCloset(user.username)
         .then(function(data){
           $window.location.href = '/#/profile/' + user.username;
-        });
+        })
+        .catch(function (err) {
+          console.log(err);
+        })
     }
 
   }]);

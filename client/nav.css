@@ -1,6 +1,6 @@
 
 .navbar {
-  height: 40px;
+  height: 44px;
   font-size: 18px;
   padding: 0px;
   background: #6e5baa;
@@ -140,13 +140,27 @@
 
 .add-link-modal h2 {
   margin: 20px auto 5px;
-  width: 300px;
+  width: 400px;
 }
 
 .add-link-modal input {
   padding: 8px 14px;
-  width: 260px;
+  width: 285px;
   font-size: 16px;
+}
+
+.add-link-modal input[type='submit'] {
+  padding: 8px 14px;
+  width: 315px;
+  font-size: 16px;
+  margin-top: 10px;
+  border: none;
+  background-color: #6e5baa;
+  color: #fff;
+}
+
+.add-link-modal input[type='submit']:hover {
+  background-color: #372d55;
 }
 
 .modal-background {
@@ -167,25 +181,112 @@
   border: 1px solid #e5e5e5;
   border-radius: 10px;
   text-align: center;
+  color: #000000;
 }
 
 .secondModal {
-  width: 50%;
-  height: 580px;
+  width: 700px;
+  height: 350px;
   margin: 60px auto;  
   border: 1px solid #e5e5e5;
   border-radius: 10px;
   text-align: center;
   background-color: #fff;
+  color: #000000;
+  padding: 5px 5px 40px;
+}
+
+.post-image-img {
+  float: left;
+  margin-left: 35px;
+  width: 250px;
+  height: 280px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.post-image-info {
+  float: left;
+  padding: 0px 10px 10px;
+  text-align: left;
+  margin-right: 35px;
+  width: 355px;
+}
+
+.post-image-info-title {
+  font-weight: 600;
+}
+
+.modal-submit {
+  width: 300px;
+  margin-right: 35px;
+  border: none;
+  background-color: #6e5baa;
+  color: #fff;
+  padding: 10px;
+  font-size: 16px;
+}
+
+.modal-submit:hover {
+  background-color: #372d55;
+}
+
+.modal-type-buttons {
+  list-style-type: none;
+  padding: 0px;
+  margin: 8px auto;
+  width: 250px;
+  font-size: 12px;
+  text-align: center;
+}
+
+.modal-type-buttons li {
+  float: left;
+  margin: 0px;
+  width: 250px;
+  height: 22px;
+  position: relative;
+  cursor:pointer;
+}
+
+.modal-type-buttons label, .modal-type-buttons input {
+  display:block;
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+}
+
+.modal-type-buttons input[type="radio"] {
+  opacity:0;
+  z-index:1;
+}
+
+.modal-type-buttons input[type="radio"]:checked + label,
+.Checked + label {
+  background: #e0e0e0;
+}
+
+.modal-type-buttons label {
+  padding-top: 0px;
+  border:1px solid #e0e0e0;
+}
+
+.modal-type-buttons li:hover {
+  background: #e0e0e0;
 }
 
 .secondModal img {
-  float: left;
-  padding-left: 60px;
+  max-width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 
 .secondModal p {
-  float: right;
+  font-size: 13px;
+  margin: 5px;
+  text-align: center;
 }
 
 .secondModal li {

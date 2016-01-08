@@ -4,7 +4,7 @@
 	<div class="add-link-modal" ng-show="firstModalShow">
 			<div class='firstModal'>
             <svg class="x-button" ng-click="changeFirstModal()" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><path d="m10 6c-2.21 0-4 1.79-4 4v28c0 2.21 1.79 4 4 4h28c2.21 0 4-1.79 4-4v-28c0-2.21-1.79-4-4-4h-28m6.83 8l7.17 7.17 7.17-7.17 2.83 2.83-7.17 7.17 7.17 7.17-2.83 2.83-7.17-7.17-7.17 7.17-2.83-2.83 7.17-7.17-7.17-7.17 2.83-2.83"/></svg>
-			<h2>Share Your Story</h2>
+			<h2>Share Link For Clothing</h2>
 			<form name="addLink" ng-submit='getImageData(newLink)' novalidate>
 				<input type='text' name="urlText" placeholder="Paste URL..." ng-model="newLink"><br>
 				<input type="submit" value="Submit Link">
@@ -16,55 +16,68 @@
 	<div class="add-link-modal" ng-show="secondModalShow" ng-model='link'>
 			<div class='secondModal'>
 			<i ng-click="changeSecondModal()" class="fa fa-times-circle fa-2x"></i>
-			<h2>Second Modal</h2>
+			<h4>Please Verify Post</h4>
 			<form name="post" ng-submit='postImage()' novalidate>
-				<img ng-src='{{ image }}' />
-				<p>{{ image_name }}</p>
-				<p>{{ link_Url }}</p><br><br>
-				<p>{{ source }}</p>
-				<input type="submit" value="Submit Link">
+				<div class='post-image-img'>
+					<img ng-src='{{ image }}' />
+				</div>
+				<div class="post-image-info">
+					<p class="post-image-info-title">{{ image_name }}</p>
+					<p>{{ source }}</p>
+					<br>
+					<p>Please Select Clothing Type</p>
+					<ul class="modal-type-buttons" ng-show='femaleShow'>
+		      			<li>
+		        			<input id="tops" type='radio' ng-model='entry.type' value='tops' />
+		        			<label for="tops">Tops</label> 
+		      			</li>
+		      			<li>
+		        			<input id="bottoms" type='radio' ng-model='entry.type' value='bottoms' />
+		        			<label for="bottoms">Bottoms</label>
+		     			</li>
+		     			<li>
+		        			<input id="dresses" type='radio' ng-model='entry.type' value='dresses' />
+		        			<label for="dresses">Dresses</label>
+		     			</li>
+		     			<li>
+		        			<input id="shoes" type='radio' ng-model='entry.type' value='shoes' />
+		        			<label for="shoes">Shoes</label>
+		     			</li>
+		     			<li>
+		        			<input id="accessories" type='radio' ng-model='entry.type' value='accessories' />
+		        			<label for="accessories">Accessories</label>
+		     			</li>
+		   			</ul>
+					<ul class="modal-type-buttons" ng-show='maleShow'>
+		      			<li>
+		        			<input id="tops" type='radio' ng-model='entry.type' value='tops' />
+		        			<label for="tops">Tops</label> 
+		      			</li>
+		      			<li>
+		        			<input id="bottoms" type='radio' ng-model='entry.type' value='bottoms' />
+		        			<label for="bottoms">Pants</label>
+		     			</li>
+		     			<li>
+		        			<input id="dresses" type='radio' ng-model='entry.type' value='dresses' />
+		        			<label for="dresses">Shorts</label>
+		     			</li>
+		     			<li>
+		        			<input id="shoes" type='radio' ng-model='entry.type' value='shoes' />
+		        			<label for="shoes">Shoes</label>
+		     			</li>
+		     			<li>
+		        			<input id="accessories" type='radio' ng-model='entry.type' value='accessories' />
+		        			<label for="accessories">Accessories</label>
+		     			</li>
+		   			</ul>
+				</div>
+				<button class="modal-submit" type="submit" value="Submit Link">Submit Link</button>
 			</form>
-			<div class='gender-female' ng-show='femaleShow'>
-				<ul class="type-buttons">
-	      			<li>
-	        			<label><input type='radio' ng-model='entry.type' value='tops' />tops</label> 
-	      			</li>
-	      			<li>
-	        			<label><input type='radio' ng-model='entry.type' value='bottoms' />bottoms</label>
-	     			</li>
-	     			<li>
-	        			<label><input type='radio' ng-model='entry.type' value='dresses' />dresses</label>
-	     			</li>
-	     			<li>
-	        			<label><input type='radio' ng-model='entry.type' value='shoes' />shoes</label>
-	     			</li>
-	     			<li>
-	        			<label><input type='radio' ng-model='entry.type' value='accessories' />accessories</label>
-	     			</li>
-	   			</ul>
-	   		</div>
-	   		<div class='gender-male' ng-show='maleShow'>
-				<ul class="type-buttons">
-	      			<li>
-	        			<label><input type='radio' ng-model='entry.type' value='tops' />tops</label> 
-	      			</li>
-	      			<li>
-	        			<label><input type='radio' ng-model='entry.type' value='bottoms' />bottoms</label>
-	     			</li>
-	     			<li>
-	        			<label><input type='radio' ng-model='entry.type' value='shoes' />shoes</label>
-	     			</li>
-	     			<li>
-	        			<label><input type='radio' ng-model='entry.type' value='accessories' />accessories</label>
-	     			</li>
-	   			</ul>
-	   		</div>
 		</div>
 	</div>
 
     <div class='navbar-left'>
 		<i ng-click="goBack()" ng-show="isAuth" class="fa fa-arrow-left"></i>
-        <!-- <svg  class="btn btn-back" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><path d="M40 22H15.66l11.17-11.17L24 8 8 24l16 16 2.83-2.83L15.66 26H40v-4z"/></svg> -->
         <a class='btn out' ng-show="!isAuth" ui-sref='signin'>Sign In</a>
         <a class='btn out' ng-show="!isAuth" ui-sref='signup'>Sign Up</a>
         <i ng-show="isAuth" class="fa fa-check-square-o" ui-sref='vote'></i>
@@ -77,7 +90,6 @@
 
     <div class="navbar-right" ng-show="username">
     	<i ng-click="changeFirstModal()" class="fa fa-plus add-link-icon"></i>
-<!--         <svg class="x-button" ng-click="changeFirstModal()" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><path d="M38 26H26v12h-4V26H10v-4h12V10h4v12h12v4z"/></svg> -->
 		<div class="nav-dropdown-link" ng-show="!{{username}}">
 			<div class="nav-dropdown-link-username" ng-click="showNavDropdownContent()">
 				<p>{{firstname}} {{lastname}}</p>

@@ -37,7 +37,7 @@ exports = module.exports = {
 		var clientQuery;
 		var done;
 
-		var resObject;
+		var userInfo;
 
 		pgConnect()
 			.then(function(connection) {
@@ -64,10 +64,12 @@ exports = module.exports = {
 
     		var user = result.rows[0];
 
-		    resObject = {
+		    userInfo = {
 	      	token:            jwt.encode(user.password, 'secret'),
 	      	username:         user.username,
-	      	userID:           user.user_id,
+          userID:           user.user_id,
+          userId:           user.user_id,
+	      	user_id:           user.user_id,
 	      	firstname:        user.firstname,
 				  lastname:         user.lastname,
 				  gender:           user.gender,
@@ -78,11 +80,15 @@ exports = module.exports = {
         return exports.getFollowers(clientQuery, user.user_id);
     	})
     	.then(function(followers) {
-        resObject.followers = followers;
+        userInfo.followers = followers;
+        return exports.getFollowing(clientQuery, userInfo.userId);
+      })
+      .then(function(following) {
+        userInfo.following = following;
 
-        console.log('resObject:\n', resObject);
+        console.log('userInfo:\n', userInfo);
 
-	      res.status(200).json(resObject);
+	      res.status(200).json(userInfo);
     	})
     	.then(done)
     	.fail(function(err) {
@@ -204,6 +210,7 @@ exports = module.exports = {
         //create a 'userInfo' object to send back to client
         userInfo.userID = user.user_id;
         userInfo.userId = user.user_id;
+        userInfo.user_id = user.user_id;
         userInfo.username = user.username;
         userInfo.firstname = user.firstname;
         userInfo.lastname = user.lastname;
@@ -276,6 +283,10 @@ exports = module.exports = {
       })
       .then(function(followers) {
         userInfo.followers = followers;
+        return exports.getFollowing(clientQuery, userInfo.userId);
+      })
+      .then(function(following) {
+        userInfo.following = following;
 
         console.log('userInfo:\n', userInfo);
         res.status(200).json(userInfo);
@@ -411,6 +422,50 @@ exports = module.exports = {
       })
   },
 
+  getFollowing: function(clientQuery, userId) {
+    return clientQuery(`
+      SELECT users.username, users.user_id, users.firstname,
+             users.lastname, users.gender, users.credibilityScore,
+             following.follower_id, following.following_id
+        FROM users
+          INNER JOIN following
+            ON    users.user_id = following.following_id
+              AND following.follower_id = $1`,
+      [userId]
+    )
+      .then(function(result) {
+        var followings = result.rows;
+        console.log('followings', followings);
+
+        // Example followings:
+        // [
+        //   {
+        //     username: 'sue',
+        //     user_id: 3,
+        //     firstname: 'sue',
+        //     lastname: 'bob',
+        //     gender: 'female',
+        //     credibilityscore: 0,
+        //     follower_id: 3,
+        //     following_id: 2
+        //   }
+        // ]
+
+        return followings.map(function(following) {
+          return {
+            username:         following.username,
+            user_id:          following.user_id,
+            firstname:        following.firstname,
+            lastname:         following.lastname,
+            gender:           following.gender,
+            credibilityScore: following.credibilityscore,
+            // follower_id:      following.follower_id,
+            following_id:     following.following_id
+          };
+        });
+      })
+  },
+
 	getBasicUserInfo: function(req, res, next) {
 		var username = req.body.username;
 
@@ -435,6 +490,7 @@ exports = module.exports = {
         //create a 'userInfo' object to send back to client
         userInfo.userID = user.user_id;
         userInfo.userId = user.user_id;
+        userInfo.user_id = user.user_id;
         userInfo.username = user.username;
         userInfo.firstname = user.firstname;
         userInfo.lastname = user.lastname;
@@ -445,6 +501,10 @@ exports = module.exports = {
       })
       .then(function(followers) {
         userInfo.followers = followers;
+        return exports.getFollowing(clientQuery, userInfo.userId);
+      })
+      .then(function(following) {
+        userInfo.following = following;
         console.log('Basic userInfo:\n', userInfo);
         res.status(200).json(userInfo);
       })
@@ -526,6 +586,9 @@ exports = module.exports = {
 		var follower = req.body.follower;
 		var following = req.body.following;
 
+    console.log('follower', follower);
+    console.log('following', following);
+
     // Example for 'following':
 		//   user_id: 1,
 	  //   username: 'Tarly',
@@ -549,6 +612,7 @@ exports = module.exports = {
     		);
     	})
     	.then(function(result) {
+        console.log('result:', result);
     		var alreadyExists = ( result.rowCount !== 0 );
     		if (alreadyExists) {
     			throw new Error('Stop promise chain');

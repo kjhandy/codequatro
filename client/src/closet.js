@@ -10,12 +10,14 @@ angular.module('myApp')
 
 
     // Temporary Data Storage
-    $scope.username = $stateParams.username || $window.localStorage.getItem('username');
+    $scope.username = $stateParams.username ||
+                      $window.localStorage.getItem('username');
 
     $scope.user = {};
 
     $scope.getUserInfo = function(){
-      //Call the factory method which gets a users images and votes for those images
+      // Call the factory method which gets a user's images
+      //   and votes for those images
       Register.register.getCloset($scope.username)
         .then(function(data){
           console.log('User Info: ', data)
@@ -50,10 +52,6 @@ angular.module('myApp')
         return false;
       }
     };
-    // initialize page with closet images if auth is good
-    if(Authorization.authorized) {
-      $scope.getUserInfo();
-    }
 
     $scope.reloadPage = function(){
       $state.go($state.current, {}, {reload: true});
@@ -68,6 +66,11 @@ angular.module('myApp')
         .catch(function (err) {
           console.log(err);
         })
+    }
+
+    // initialize page with closet images if auth is good
+    if(Authorization.authorized) {
+      $scope.getUserInfo();
     }
 
   }]);

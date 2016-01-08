@@ -17,6 +17,7 @@ angular.module('myApp')
     $scope.gender = undefined; // will be set when 'getUserInfo' is run
     $scope.userCredibility = undefined; // will be set when 'getUserInfo' is run
 
+    $scope.user = {};
 
     $scope.getUserInfo = function(){
       //Call the factory method which gets a users images and votes for those images
@@ -61,11 +62,20 @@ angular.module('myApp')
     };
     // initialize page with closet images if auth is good
     if(Authorization.authorized) {
+      console.log('not authorized');
         $scope.getUserInfo();
     }
 
     $scope.reloadPage = function(){
       $state.go($state.current, {}, {reload: true});
     };
+
+    $scope.goToProfile = function(user) {
+      console.log('Switching to %s\'s profile', user.username);
+      Register.register.getCloset(user.username)
+        .then(function(data){
+          $window.location.href = '/#/profile/' + user.username;
+        });
+    }
 
   }]);

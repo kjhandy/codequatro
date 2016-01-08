@@ -13,7 +13,7 @@ angular.module('myApp')
     $scope.user = {};
     $scope.user = JSON.parse($window.localStorage.getItem('user'));
     $scope.userID = $scope.user.userID;
-    $scope.username = $scope.user.username;
+    $scope.username = $stateParams.username || $scope.user.username;
     $scope.gender = $scope.user.gender;
     $scope.firstname = $scope.user.firstname;
     $scope.lastname = $scope.user.lastname;

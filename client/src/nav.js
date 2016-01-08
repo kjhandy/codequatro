@@ -6,11 +6,12 @@ angular.module('myApp')
    $scope.isAuth=Authorization.authorized;
 
    // data storage
-    $scope.username = $window.localStorage.getItem('username');
-	$scope.userID = $window.localStorage.getItem('userID');
-    $scope.gender = undefined;
-    $scope.firstname = undefined;
-    $scope.lastname = undefined;
+    $scope.user = JSON.parse($window.localStorage.getItem('user'));
+    $scope.userID = $scope.user.userID;
+    $scope.username = $scope.user.username;
+    $scope.gender = $scope.user.gender;
+    $scope.firstname = $scope.user.firstname;
+    $scope.lastname = $scope.user.lastname;
 
 	$scope.image_name = undefined;
 	$scope.image = undefined;
@@ -93,24 +94,8 @@ angular.module('myApp')
     	})
     };
 
-    $scope.getBasicUserInfo = function() {
-      //Call the factory method which gets a users images and votes for those images
-      Register.register.getBasicUserInfo($scope.username)
-      .then(function(data){
-        console.log('da data: ', data)
-        // Storing User Info
-        $scope.firstname = data.firstname;
-        $scope.lastname = data.lastname;
-        $scope.gender = data.gender;
-      }); 
-    }
-
     $scope.goBack = function() {
       $window.history.back();
-    }
-
-    if(Authorization.authorized) {
-      $scope.getBasicUserInfo();
     }
 
   }]);

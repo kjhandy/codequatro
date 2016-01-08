@@ -10,10 +10,14 @@ angular.module('myApp')
 
 
     // Temporary Data Storage
-    $scope.username = $stateParams.username ||
-                      $window.localStorage.getItem('username');
-
     $scope.user = {};
+    $scope.user = JSON.parse($window.localStorage.getItem('user'));
+    $scope.userID = $scope.user.userID;
+    $scope.username = $scope.user.username;
+    $scope.gender = $scope.user.gender;
+    $scope.firstname = $scope.user.firstname;
+    $scope.lastname = $scope.user.lastname;
+
 
     $scope.getUserInfo = function(){
       // Call the factory method which gets a user's images

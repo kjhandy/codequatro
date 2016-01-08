@@ -35,7 +35,7 @@
 
 <br>
 
-  <div class='closet-user-stats'>
+  <div class='closet-user-stats' ng-hide="user.pics.length < 1">
     <span>{{users.pics.length}} Photos</span>
     <span>20 Upvotes</span>
     <span>{{user.userCredibility}} Fashionista Points</span>
@@ -57,7 +57,10 @@
       <span class="source">{{pic.source}}</span>
     </div>
   </div>
-  <div ng-show="user.pics.length < 1"> Please Share Your Photos</div>
+  <div class='no-photos-message' ng-show="user.pics.length < 1">
+    <h3>Welcome {{ firstname }} {{ lastname }}</h3>
+    <p>Share a photo and see it here. This is your closet.</p>
+  </div>
 </div>
     <div class="followers-container">
       <div class="followers-interior">

@@ -318,6 +318,14 @@ svg {
   float: left;
 }
 
+.no-photos-message {
+  background-color: #f4f4f4;
+  text-align: center;
+  padding: 20px;
+  border: 4px solid #372d55;
+  border-radius: 5px;
+}
+
 
 /*** Vote Page ***/
 

@@ -104,6 +104,12 @@ a:hover, a:link {
   text-align: center;
 }
 
+.closet-title {
+  color: #000000;
+  text-align: center;
+  font-size: 24px;
+}
+
 .closetbuttons {
   display: inline;
 }
@@ -150,8 +156,8 @@ svg {
 .top-user-container {
   display: inline-block;
   float: left;
-  width: 20em;
-  height: 15em;
+  width: 25em;
+  height: 18em;
   border: 1px solid #6e5baa;
   border-radius: 4px;
   background-color: #6e5baa;
@@ -189,9 +195,11 @@ svg {
 .home-feed {
   width: 90%;
   margin: 0px auto;
+  text-align: center;
 }
 
 .home-feed-card {
+  text-align: left;
   border: 1px solid #e0e0e0;
   background-color: #e0e0e0;
   height: 300px;
@@ -305,7 +313,8 @@ svg {
 /*** Profile Page ***/
 .closet-user-stats {
   width: 100%;
-  height: 40px;
+  border: 1px solid #e0e0e0;
+  height: 33px;
   background-color: #fff;
   margin: 10px auto;
 }
@@ -328,6 +337,11 @@ svg {
 
 
 /*** Vote Page ***/
+
+.vote-card-container {
+  margin: 50px auto 0px;
+  width: 100%;
+}
 
 .vote-card {
   text-align: center;

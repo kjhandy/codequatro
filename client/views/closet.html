@@ -1,7 +1,5 @@
 <div class='home-feed' ng-controller="ClosetCtrl">
 
-<br><br>
-
 <!-- <div class='closetform'>
   <h3>&nbsp;&nbsp;add to your closet:</h3>
 
@@ -32,13 +30,13 @@
         </select>
     </div>
 </div> -->
-
 <br>
 
+  <h1 class='closet-title'>{{user.firstname}} {{user.lastname}}</h1>
   <div class='closet-user-stats' ng-hide="user.pics.length < 1">
-    <span>{{users.pics.length}} Photos</span>
-    <span>20 Upvotes</span>
-    <span>{{user.userCredibility}} Fashionista Points</span>
+    <span>{{user.pics.length}} Photos</span>
+    <span><strong>{{user.userCredibility}} Fashionista Points</strong></span>
+    <span>22 Total Upvotes</span>
   </div>
   <div class='home-feed-card' ng-repeat='pic in user.pics'>
     <img class='item_url' ng-src='{{ pic.image }}'>

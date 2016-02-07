@@ -1,10 +1,14 @@
 {
-  "name": "MyApp",
+  "name": "ClosetFashionista",
   "version": "1.0.0",
-  "main": "server/index.js",
-  "description": "A rapid project starter for Node, Express and Angular.",
+  "main": "server.js",
+  "description": "Fashion platform that allows users to submit links to clothing they might purchase and receive feedback",
   "engines": {
     "node": ">=0.10.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kjhandy/codequatro"
   },
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
@@ -29,14 +33,14 @@
     "supertest": "^1.1.0",
     "supertest-as-promised": "^2.0.2"
   },
-  "author": "Dan <dan.corman@gmail.com>",
+  "authors": "Kayla Handy, Dan Gorby, Hank Couture, Stoney McCrary",
   "license": "MIT",
   "scripts": {
-    "start": "./node_modules/.bin/nodemon server/index.js --ignore client/ --ignore node_modules/",
+    "start": "./node_modules/.bin/nodemon ./server.js --ignore client/ --ignore node_modules/",
     "test": "./test/run.sh"
   },
   "bugs": {
-    "url": "https://github.com/dyale/node-catapult-angular/issues"
+    "url": "https://github.com/kjhandy/codequatro/issues"
   },
-  "homepage": "https://github.com/dyale/node-catapult-angular/"
+  "homepage": "https://github.com/kjhandy/codequatro"
 }

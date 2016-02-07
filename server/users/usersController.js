@@ -17,7 +17,7 @@ function pgConnect() {
 	var deferred = Q.defer();
   pg.connect(connectString, function (err, client, done){
     if(err){
-      deffered.reject(new Error('error connecting to the DB:', err) );
+      deferred.reject(new Error('error connecting to the DB:', err) );
       done();
     } else {
     	deferred.resolve({
